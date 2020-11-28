@@ -1,5 +1,8 @@
 class MetadataValidator {
   validateMetadata (metadata) {
+    if (!metadata) {
+      throw new Error('no metadata specified')
+    }
     if (!metadata.name) {
       throw new Error('no name specified in metadata')
     }

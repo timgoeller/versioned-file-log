@@ -1,24 +1,27 @@
-const { TestScheduler } = require("jest")
-const MetadataValidator = require("../src/metadata-validator")
+const MetadataValidator = require('../src/metadata-validator')
 
 describe('MetadataValidator', () => {
-  test('it should fail if no name is specified', () => {
+  test('fails if no metadata is specified', () => {
+    const validator = new MetadataValidator()
+    expect(() => validator.validateMetadata(null)).toThrow(Error)
+  })
+  test('fails if no name is specified', () => {
     const validator = new MetadataValidator()
     expect(() => validator.validateMetadata({})).toThrow(Error)
   })
-  test('it should fail if no description is specified', () => {
+  test('fails if no description is specified', () => {
     const validator = new MetadataValidator()
     expect(() => validator.validateMetadata({ name: 'test' }))
       .toThrow(Error)
   })
-  test('it should fail if no author is specified', () => {
+  test('fails if no author is specified', () => {
     const validator = new MetadataValidator()
     expect(() => validator.validateMetadata({
       name: 'test',
       description: 'some description'
     })).toThrow(Error)
   })
-  test('it should fail if no version is specified', () => {
+  test('fails if no version is specified', () => {
     const validator = new MetadataValidator()
     expect(() => validator.validateMetadata({
       name: 'test',
@@ -26,7 +29,7 @@ describe('MetadataValidator', () => {
       author: 'rick astley'
     })).toThrow(Error)
   })
-  test('it should succeed if all metadata is specified', () => {
+  test('succeeds if all metadata is specified', () => {
     const validator = new MetadataValidator()
     expect(() => validator.validateMetadata({
       name: 'test',
