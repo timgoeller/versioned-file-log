@@ -29,19 +29,21 @@ class FileLog {
     })
   }
 
-  update (metadata) {
+  async update (metadata) {
     const self = this
+    const locationIdentifier = await self.storage.store(self.localStorageFolder, metadata)
+
+    metadata.location = { locationIdentifier, storageType: self.storage.type }
+    await this.appendEntryToFeed({ type: 'update', value: metadata })
+  }
+
+  appendEntryToFeed (feedEntry) {
     return new Promise((resolve, reject) => {
-      self.storage.store(self.localStorageFolder).then((locationIdentifier) => {
-        metadata.location = { locationIdentifier, storageType: self.storage.type }
-        const feedEntry = { type: 'update', value: metadata }
-        self.feed.append(feedEntry, (err) => {
-          if (err) throw err
-          resolve()
-        })
+      this.feed.append(feedEntry, (err) => {
+        if (err) reject(err)
+        resolve()
       })
     })
   }
 }
-
 module.exports = FileLog
