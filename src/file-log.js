@@ -31,6 +31,10 @@ class FileLog {
   async update (metadata) {
     this.validator.validateMetadata(metadata)
 
+    if (!this.feed) {
+      await this.initialize()
+    }
+
     const self = this
     const locationIdentifier = await self.storage.store(self.localStorageFolder, metadata)
 

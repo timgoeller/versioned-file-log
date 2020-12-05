@@ -71,7 +71,6 @@ describe('FileLog', () => {
     test('appends metadata to feed', async () => {
       const fileLog = defaultFileLog()
       const metadata = testMetadata()
-      await fileLog.initialize(metadata)
       await fileLog.update(metadata)
       return new Promise((resolve) => {
         fileLog.feed.get(0, (err, data) => {
