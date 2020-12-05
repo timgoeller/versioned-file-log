@@ -21,15 +21,16 @@ class FileLog {
     this.feedFolder = feedFolder
   }
 
-  initialize (initialMetadata) {
-    this.validator.validateMetadata(initialMetadata)
+  initialize () {
     this.feed = hypercore(this.feedFolder, { valueEncoding: 'json' })
     return new Promise((resolve, reject) => {
-      this.feed.on('ready', () => this.update(initialMetadata).then(() => { resolve() }))
+      this.feed.on('ready', () => resolve())
     })
   }
 
   async update (metadata) {
+    this.validator.validateMetadata(metadata)
+
     const self = this
     const locationIdentifier = await self.storage.store(self.localStorageFolder, metadata)
 

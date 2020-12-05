@@ -66,20 +66,13 @@ describe('FileLog', () => {
       await fileLog.initialize(testMetadata())
       expect(fileLog.feed).toBeDefined()
     })
-    test('calls update with metadata', async () => {
-      const spy = jest.spyOn(FileLog.prototype, 'update')
-        .mockImplementation(() => new Promise((resolve) => resolve('')))
-      const fileLog = defaultFileLog()
-      const metadata = testMetadata()
-      await fileLog.initialize(metadata)
-      expect(spy).toHaveBeenCalledWith(metadata)
-    })
   })
   describe('#update', () => {
     test('appends metadata to feed', async () => {
       const fileLog = defaultFileLog()
       const metadata = testMetadata()
       await fileLog.initialize(metadata)
+      await fileLog.update(metadata)
       return new Promise((resolve) => {
         fileLog.feed.get(0, (err, data) => {
           if (err) throw err
